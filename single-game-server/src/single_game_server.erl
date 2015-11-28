@@ -31,7 +31,8 @@
 %% Creates a ship record that has not been hit yet
 place_ship(ShipName, CoordList, PlayerNum, GameState=#game{}) -> %% Each coordinate in list param is a 2-tuple {$a, 1}
     NewShip = #ship{name=ShipName,
-          %% List comprehension to create new list of coordinate records with hit_status of none (the default)
+          %% List comprehension to create new list of coordinate
+          %% records with hit_status of none (the default)
           coord_list=[#coord_rec{coord=#coord{row=Row,column=Col}} 
            || {Row, Col} <- CoordList,    %% Map each coordinate from passed-in list to a two-tuple
               Row >= $a, Row =< $j,       %% Ensure row is valid
@@ -71,15 +72,33 @@ hit_board(_,[],FinalBoard) -> {miss, FinalBoard}; %% The target was not found - 
 hit_board(Target=#coord{}, [CurrShip=#ship{}|RestBoard], FinalBoard) ->
     %% Check if target coord is a coord the ship is placed on
     TgtCoordRec = #coord_rec{hit_status=none,coord=Target},
-    io:format("Coord rec ~p~n", [TgtCoordRec]),
+    io:format("Trying to hit target: ~p~n", [Target]),
     case lists:member(TgtCoordRec, CurrShip#ship.coord_list) of 
         true -> %% Update the ship's coordinate to be hit - target was found
+            io:format("Hit the target!~n"),
             {hit, 
-             [#coord_rec{hit_status=hit,coord=Target} |
-              lists:delete(TgtCoordRec, CurrShip#ship.coord_list)]};
+             [CurrShip#ship{coord_list=[#coord_rec{hit_status=hit,coord=Target} |
+              lists:delete(TgtCoordRec, CurrShip#ship.coord_list)]}]
+              ++ RestBoard ++ FinalBoard};
         false -> %% Check the next ship
+            io:format("Didn't hit the target, try next ship~n"),
             hit_board(Target, RestBoard, [CurrShip | FinalBoard])
     end. 
-%%update_console(
 
+get_winner(GameState=#game{}) ->
+    %% Assumes that get_winner is called after every move - only 1 winner at a time
+    case are_ships_left(GameState#game.player1Board) of
+        false -> player2;
+        true ->
+            case are_ships_left(GameState#game.player2Board) of
+                false -> player1;
+                true -> no_one
+            end
+    end.
 
+are_ships_left([]) -> false;
+are_ships_left([Ship|Rest]) ->
+    case lists:filter(fun(X) -> X#coord_rec.hit_status =/= hit end, Ship#ship.coord_list) of
+        [] -> are_ships_left(Rest);
+        _ -> true
+    end.
