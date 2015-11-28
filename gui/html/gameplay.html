@@ -1,0 +1,348 @@
+<html>
+  <link rel="stylesheet" type="text/css" href="../css/gameplay.css">
+  
+  <head>
+    <h1>Battleship</h1>
+    
+  </head>
+
+  <body>
+    <table class="boards">
+    <tr><td class="board" id="opponent-board-cell">
+      <h2>Opponent View</h2>
+      <table class="center" id="opponent-board">
+        <tr class="cellHeading">
+          <td class="cellHeading"></td>
+          <td class="cellHeading">0</td>
+          <td class="cellHeading">1</td>
+          <td class="cellHeading">2</td>
+          <td class="cellHeading">3</td>
+          <td class="cellHeading">4</td>
+          <td class="cellHeading">5</td>
+          <td class="cellHeading">6</td>
+          <td class="cellHeading">7</td>
+          <td class="cellHeading">8</td>
+          <td class="cellHeading">9</td>
+        <tr>
+     
+        <tr>
+          <td class="cellHeading">A</td>
+          <td class="cell" id="A0"></td>
+          <td class="cell" id="A1"></td>
+          <td class="cell" id="A2"></td>
+          <td class="cell" id="A3"></td>
+          <td class="cell" id="A4"></td>
+          <td class="cell" id="A5"></td>
+          <td class="cell" id="A6"></td>
+          <td class="cell" id="A7"></td>
+          <td class="cell" id="A8"></td>
+          <td class="cell" id="A9"></td>
+        </tr>
+     
+	     <tr>
+	        <td class="cellHeading">B</td>
+	        <td class="cell" id="B0"></td>
+	        <td class="cell" id="B1"></td>
+	        <td class="cell" id="B2"></td>
+	        <td class="cell" id="B3"></td>
+	        <td class="cell" id="B4"></td>
+	        <td class="cell" id="B5"></td>
+	        <td class="cell" id="B6"></td>
+	        <td class="cell" id="B7"></td>
+	        <td class="cell" id="B8"></td>
+	        <td class="cell" id="B9"></td>
+	      </tr>
+
+	      <tr>
+	        <td class="cellHeading">C</td>
+	        <td class="cell" id="C0"></td>
+	        <td class="cell" id="C1"></td>
+	        <td class="cell" id="C2"></td>
+	        <td class="cell" id="C3"></td>
+	        <td class="cell" id="C4"></td>
+	        <td class="cell" id="C5"></td>
+	        <td class="cell" id="C6"></td>
+	        <td class="cell" id="C7"></td>
+	        <td class="cell" id="C8"></td>
+	        <td class="cell" id="C9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">D</td>
+	        <td class="cell" id="D0"></td>
+	        <td class="cell" id="D1"></td>
+	        <td class="cell" id="D2"></td>
+	        <td class="cell" id="D3"></td>
+	        <td class="cell" id="D4"></td>
+	        <td class="cell" id="D5"></td>
+	        <td class="cell" id="D6"></td>
+	        <td class="cell" id="D7"></td>
+	        <td class="cell" id="D8"></td>
+	        <td class="cell" id="D9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">E</td>
+	        <td class="cell" id="E0"></td>
+	        <td class="cell" id="E1"></td>
+	        <td class="cell" id="E2"></td>
+	        <td class="cell" id="E3"></td>
+	        <td class="cell" id="E4"></td>
+	        <td class="cell" id="E5"></td>
+	        <td class="cell" id="E6"></td>
+	        <td class="cell" id="E7"></td>
+	        <td class="cell" id="E8"></td>
+	        <td class="cell" id="E9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">F</td>
+	        <td class="cell" id="F0"></td>
+	        <td class="cell" id="F1"></td>
+	        <td class="cell" id="F2"></td>
+	        <td class="cell" id="F3"></td>
+	        <td class="cell" id="F4"></td>
+	        <td class="cell" id="F5"></td>
+	        <td class="cell" id="F6"></td>
+	        <td class="cell" id="F7"></td>
+	        <td class="cell" id="F8"></td>
+	        <td class="cell" id="F9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">G</td>
+	        <td class="cell" id="G0"></td>
+	        <td class="cell" id="G1"></td>
+	        <td class="cell" id="G2"></td>
+	        <td class="cell" id="G3"></td>
+	        <td class="cell" id="G4"></td>
+	        <td class="cell" id="G5"></td>
+	        <td class="cell" id="G6"></td>
+	        <td class="cell" id="G7"></td>
+	        <td class="cell" id="G8"></td>
+	        <td class="cell" id="G9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">H</td>
+	        <td class="cell" id="H0"></td>
+	        <td class="cell" id="H1"></td>
+	        <td class="cell" id="H2"></td>
+	        <td class="cell" id="H3"></td>
+	        <td class="cell" id="H4"></td>
+	        <td class="cell" id="H5"></td>
+	        <td class="cell" id="H6"></td>
+	        <td class="cell" id="H7"></td>
+	        <td class="cell" id="H8"></td>
+	        <td class="cell" id="H9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">I</td>
+	        <td class="cell" id="I0"></td>
+	        <td class="cell" id="I1"></td>
+	        <td class="cell" id="I2"></td>
+	        <td class="cell" id="I3"></td>
+	        <td class="cell" id="I4"></td>
+	        <td class="cell" id="I5"></td>
+	        <td class="cell" id="I6"></td>
+	        <td class="cell" id="I7"></td>
+	        <td class="cell" id="I8"></td>
+	        <td class="cell" id="I9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">J</td>
+	        <td class="cell" id="J0"></td>
+	        <td class="cell" id="J1"></td>
+	        <td class="cell" id="J2"></td>
+	        <td class="cell" id="J3"></td>
+	        <td class="cell" id="J4"></td>
+	        <td class="cell" id="J5"></td>
+	        <td class="cell" id="J6"></td>
+	        <td class="cell" id="J7"></td>
+	        <td class="cell" id="J8"></td>
+	        <td class="cell" id="J9"></td>
+	      </tr>
+	    
+	    </table>
+    </td>
+
+    <td class="board" id="player-board-cell">
+	    <h2>Player Board</h2>
+	    <table class="center" id="player-board">
+	      <tr class="cellHeading">
+	        <td class="cellHeading"></td>
+	        <td class="cellHeading">0</td>
+	        <td class="cellHeading">1</td>
+	        <td class="cellHeading">2</td>
+	        <td class="cellHeading">3</td>
+	        <td class="cellHeading">4</td>
+	        <td class="cellHeading">5</td>
+	        <td class="cellHeading">6</td>
+	        <td class="cellHeading">7</td>
+	        <td class="cellHeading">8</td>
+	        <td class="cellHeading">9</td>
+	      <tr>
+	     
+	      <tr>
+	        <td class="cellHeading">A</td>
+	        <td class="cell" id="A0"></td>
+	        <td class="cell" id="A1"></td>
+	        <td class="cell" id="A2"></td>
+	        <td class="cell" id="A3"></td>
+	        <td class="cell" id="A4"></td>
+	        <td class="cell" id="A5"></td>
+	        <td class="cell" id="A6"></td>
+	        <td class="cell" id="A7"></td>
+	        <td class="cell" id="A8"></td>
+	        <td class="cell" id="A9"></td>
+	      </tr>
+     
+	     	<tr>
+	        <td class="cellHeading">B</td>
+	        <td class="cell" id="B0"></td>
+	        <td class="cell" id="B1"></td>
+	        <td class="cell" id="B2"></td>
+	        <td class="cell" id="B3"></td>
+	        <td class="cell" id="B4"></td>
+	        <td class="cell" id="B5"></td>
+	        <td class="cell" id="B6"></td>
+	        <td class="cell" id="B7"></td>
+	        <td class="cell" id="B8"></td>
+	        <td class="cell" id="B9"></td>
+	      </tr>
+
+	      <tr>
+	        <td class="cellHeading">C</td>
+	        <td class="cell" id="C0"></td>
+	        <td class="cell" id="C1"></td>
+	        <td class="cell" id="C2"></td>
+	        <td class="cell" id="C3"></td>
+	        <td class="cell" id="C4"></td>
+	        <td class="cell" id="C5"></td>
+	        <td class="cell" id="C6"></td>
+	        <td class="cell" id="C7"></td>
+	        <td class="cell" id="C8"></td>
+	        <td class="cell" id="C9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">D</td>
+	        <td class="cell" id="D0"></td>
+	        <td class="cell" id="D1"></td>
+	        <td class="cell" id="D2"></td>
+	        <td class="cell" id="D3"></td>
+	        <td class="cell" id="D4"></td>
+	        <td class="cell" id="D5"></td>
+	        <td class="cell" id="D6"></td>
+	        <td class="cell" id="D7"></td>
+	        <td class="cell" id="D8"></td>
+	        <td class="cell" id="D9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">E</td>
+	        <td class="cell" id="E0"></td>
+	        <td class="cell" id="E1"></td>
+	        <td class="cell" id="E2"></td>
+	        <td class="cell" id="E3"></td>
+	        <td class="cell" id="E4"></td>
+	        <td class="cell" id="E5"></td>
+	        <td class="cell" id="E6"></td>
+	        <td class="cell" id="E7"></td>
+	        <td class="cell" id="E8"></td>
+	        <td class="cell" id="E9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">F</td>
+	        <td class="cell" id="F0"></td>
+	        <td class="cell" id="F1"></td>
+	        <td class="cell" id="F2"></td>
+	        <td class="cell" id="F3"></td>
+	        <td class="cell" id="F4"></td>
+	        <td class="cell" id="F5"></td>
+	        <td class="cell" id="F6"></td>
+	        <td class="cell" id="F7"></td>
+	        <td class="cell" id="F8"></td>
+	        <td class="cell" id="F9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">G</td>
+	        <td class="cell" id="G0"></td>
+	        <td class="cell" id="G1"></td>
+	        <td class="cell" id="G2"></td>
+	        <td class="cell" id="G3"></td>
+	        <td class="cell" id="G4"></td>
+	        <td class="cell" id="G5"></td>
+	        <td class="cell" id="G6"></td>
+	        <td class="cell" id="G7"></td>
+	        <td class="cell" id="G8"></td>
+	        <td class="cell" id="G9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">H</td>
+	        <td class="cell" id="H0"></td>
+	        <td class="cell" id="H1"></td>
+	        <td class="cell" id="H2"></td>
+	        <td class="cell" id="H3"></td>
+	        <td class="cell" id="H4"></td>
+	        <td class="cell" id="H5"></td>
+	        <td class="cell" id="H6"></td>
+	        <td class="cell" id="H7"></td>
+	        <td class="cell" id="H8"></td>
+	        <td class="cell" id="H9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">I</td>
+	        <td class="cell" id="I0"></td>
+	        <td class="cell" id="I1"></td>
+	        <td class="cell" id="I2"></td>
+	        <td class="cell" id="I3"></td>
+	        <td class="cell" id="I4"></td>
+	        <td class="cell" id="I5"></td>
+	        <td class="cell" id="I6"></td>
+	        <td class="cell" id="I7"></td>
+	        <td class="cell" id="I8"></td>
+	        <td class="cell" id="I9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">J</td>
+	        <td class="cell" id="J0"></td>
+	        <td class="cell" id="J1"></td>
+	        <td class="cell" id="J2"></td>
+	        <td class="cell" id="J3"></td>
+	        <td class="cell" id="J4"></td>
+	        <td class="cell" id="J5"></td>
+	        <td class="cell" id="J6"></td>
+	        <td class="cell" id="J7"></td>
+	        <td class="cell" id="J8"></td>
+	        <td class="cell" id="J9"></td>
+	      </tr>
+	    
+	    </table>
+    </td></tr>
+    </table>
+    <h3>Instructions</h3>
+    <div class="instructions">
+      <strong class="player-instructions">Instructions: On your turn, click on one cell on your opponent's board to attack it, otherwise, wait for your opponent to make their move. See the Game Key below to see what each colored cell means</strong><br>
+      <strong>It is </strong><strong id="player-turn"></strong><strong>turn</strong>
+    </div>
+    <h3>Game Key</h3>
+    <div class="gameKey">
+      <strong>Red: Hit</strong><br>
+      <strong>Blue: Miss</strong><br>
+      <strong>Green: Ship</strong><br>
+    </div>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script srt="../js/gameplay.js></script>
+
+  </body>
+
+</html>
