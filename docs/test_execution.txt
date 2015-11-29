@@ -1,0 +1,126 @@
+1> c(single_game_server).
+{ok,single_game_server}
+2> rr(single_game_server).
+[coord,coord_rec,game,ship]
+3> {ok, Pid} = single_game_server:start_link().
+{ok,<0.43.0>}
+4> single_game_server:place(Pid, destroyer, [{$b,2},{$b,3},{$b,4}], player1).
+ok
+5> single_game_server:place(Pid, patrol_boat, [{$a,1},{$b,1}], player2).
+ok
+6> single_game_server:get_game(Pid).
+#game{
+    player1Info = undefined,player2Info = undefined,
+    player1Board =
+        [#ship{
+             name = destroyer,
+             coord_list =
+                 [#coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 2}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 3}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 4}}]}],
+    player2Board =
+        [#ship{
+             name = patrol_boat,
+             coord_list =
+                 [#coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 97,column = 1}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 1}}]}],
+    player1Console = [],player2Console = [],winner = no_one,
+    turn = player1}
+7> single_game_server:attack(Pid, {$a,1}, player1).
+{did_attack,[#coord_rec{hit_status = hit,
+                        coord = #coord{row = 97,column = 1}}]}
+8> single_game_server:attack(Pid, {$a,1}, player1). %% Player 1 is trying to attack out of turn
+{did_not_attack,[]}
+9> %% Player 1 is trying to attack out of turn
+9> single_game_server:attack(Pid, {$a,1}, player2).
+{did_attack,[#coord_rec{hit_status = miss,
+                        coord = #coord{row = 97,column = 1}}]}
+10> single_game_server:get_game(Pid).
+#game{
+    player1Info = undefined,player2Info = undefined,
+    player1Board =
+        [#ship{
+             name = destroyer,
+             coord_list =
+                 [#coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 2}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 3}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 4}}]}],
+    player2Board =
+        [#ship{
+             name = patrol_boat,
+             coord_list =
+                 [#coord_rec{
+                      hit_status = hit,
+                      coord = #coord{row = 97,column = 1}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 1}}]}],
+    player1Console =
+        [#coord_rec{
+             hit_status = hit,
+             coord = #coord{row = 97,column = 1}}],
+    player2Console =
+        [#coord_rec{
+             hit_status = miss,
+             coord = #coord{row = 97,column = 1}}],
+    winner = no_one,turn = player1}
+11> single_game_server:attack(Pid, {$b,1}, player1).
+{did_attack,[#coord_rec{hit_status = hit,
+                        coord = #coord{row = 98,column = 1}},
+             #coord_rec{hit_status = hit,
+                        coord = #coord{row = 97,column = 1}}]}
+12> single_game_server:get_game(Pid).
+#game{
+    player1Info = undefined,player2Info = undefined,
+    player1Board =
+        [#ship{
+             name = destroyer,
+             coord_list =
+                 [#coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 2}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 3}},
+                  #coord_rec{
+                      hit_status = none,
+                      coord = #coord{row = 98,column = 4}}]}],
+    player2Board =
+        [#ship{
+             name = patrol_boat,
+             coord_list =
+                 [#coord_rec{
+                      hit_status = hit,
+                      coord = #coord{row = 98,column = 1}},
+                  #coord_rec{
+                      hit_status = hit,
+                      coord = #coord{row = 97,column = 1}}]}],
+    player1Console =
+        [#coord_rec{
+             hit_status = hit,
+             coord = #coord{row = 98,column = 1}},
+         #coord_rec{
+             hit_status = hit,
+             coord = #coord{row = 97,column = 1}}],
+    player2Console =
+        [#coord_rec{
+             hit_status = miss,
+             coord = #coord{row = 97,column = 1}}],
+    winner = player1,turn = player2}
+13> %% Notice that player 1 has now won the game
