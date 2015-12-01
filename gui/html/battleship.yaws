@@ -1,0 +1,20 @@
+<html>
+  <link rel="stylesheet" type="text/css" href="../css/battleship.css">
+  <head>
+    <h1>Battleship</h1>
+    <h2>CSC 435 - Erlang</h2>
+    <h3>By: Brandon Gottlob, Chris Hranj, Matt Judy, Sean Clark, Tyler Povanda</h3>
+  </head>
+  <body>
+    <form method="post" action="/gui/html/setup.yaws">
+    <table class="center">
+      <tr>
+        <td><input type="submit" id="new_rand_game" value="New Game"></td>
+        <td></td>
+        <td><input type="submit" id="new_friend_game" value="New Game With Friend"></td>
+      </tr>
+    <table>
+    </form>
+  </body>
+
+</html>

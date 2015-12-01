@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <table class="boards">
+    <table class="center">
     <tr><td class="board" id="opponent-board-cell">
       <h2>Opponent View</h2>
       <table class="center" id="opponent-board">
@@ -339,9 +339,54 @@
       <strong>Blue: Miss</strong><br>
       <strong>Green: Ship</strong><br>
     </div>
+    <div id="debug"></div>
 
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script srt="../js/gameplay.js></script>
+    <script src="../include/jquery-1.11.0.min.js"></script>
+    <script src="../js/gameplay.js></script>
+    <script>
+      $document.ready(function(){
+        var ws;
+
+        if ("WebSocket" in window) {
+          debug("Hooray you have web sockets. Trying to connect...");
+          ws = new WebSocket("ws://localhost:8000/websession");
+
+          ws.onopen = function(){
+            debug("connected...");
+            ws.send("hellow from the browser");
+            ws.send("more from browser");
+          };
+
+          run = function() {
+            var val=$("#A2").val();
+            $("#A2").val("");
+            ws.send(val);
+            return true;
+          };
+
+          ws.onmessage = function (evt)
+          {
+            var data = evt.data;
+            var i = data.indexOf("!");
+            var tag = data.slice(0,i);
+            var val = data.slice(i+1);
+            $("#" + tag).html(val);
+          };
+
+          ws.onclose = function()
+          {
+            debug(" socket closed");
+          };
+        } else {
+          alert("You have no web sockets");
+        };
+          
+        function debug(str){
+           $("#debug").append("<p>" + str);
+         };
+        
+      });
+    </script>
 
   </body>
 
