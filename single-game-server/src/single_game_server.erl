@@ -1,6 +1,6 @@
 -module(single_game_server).
 -behavior(gen_server).
--export([attack/3, place/4, get_game/1, start_link/0]). %% Client API calls
+-export([attack/3, place/4, get_game/1, get_game_for_player/2, start_link/0]). %% Client API calls
 -export([handle_call/3, handle_cast/2, code_change/3, terminate/2,
          handle_info/2, init/1]). %% Interface functions for implementing gen_server behavior
 
@@ -28,7 +28,7 @@ attack(Pid, Target, Attacker) ->
     gen_server:call(Pid, {attack, Target, Attacker}).
 
 place(Pid, ShipName, ShipCoords, Placer) ->
-    gen_server:cast(Pid, {place, ShipName, ShipCoords, Placer}).
+    gen_server:call(Pid, {place, ShipName, ShipCoords, Placer}).
 
 %% Just gets status of the whole game -- for debugging purposes right now
 %% This function should not be used for anything but debugging
@@ -36,6 +36,10 @@ place(Pid, ShipName, ShipCoords, Placer) ->
 %% the data about the opponent's board
 get_game(Pid) ->
     gen_server:call(Pid, {getgame}).
+
+%% Gets information that the player needs to populate board and console
+get_game_for_player(Pid, Player) ->
+    gen_server:call(Pid, {getgame, Player}).
 
 %% Server functions
 
@@ -58,10 +62,21 @@ handle_call({attack, Target, Attacker}, _From, Game=#game{}) ->
            {reply, {did_not_attack, []}, Game}
     end;
 handle_call({getgame}, _From, Game=#game{}) ->
-    {reply, Game, Game}.
+    {reply, Game, Game};
+handle_call({getgame, Player}, _From, Game=#game{}) ->
+    case Player of
+        player1 ->
+            {reply, {Game#game.player1Board, Game#game.player1Console}, Game};
+        player2 ->
+            {reply, {Game#game.player2Board, Game#game.player2Console}, Game}
+    end;
+handle_call({place, ShipName, CoordList, Placer}, _From, Game=#game{}) ->
+    {Status, NewGame} = place_ship(ShipName, CoordList, Placer, Game),
+    {reply, Status, NewGame}.
 
-handle_cast({place, ShipName, CoordList, Placer}, Game=#game{}) ->
-    {noreply, place_ship(ShipName, CoordList, Placer, Game)}.
+handle_cast(Message, Game=#game{}) ->
+    io:format("Unexpected message ~p~n", [Message]),
+    {noreply, Game}.
 
 %% Handle unexpected messages
 handle_info(Message, Game=#game{}) ->
@@ -90,23 +105,25 @@ place_ship(ShipName, CoordList, Placer, GameState=#game{}) -> %% Each coordinate
         OrigLen -> %% No original coordinates were filtered out
             if
                 Placer =:= player1 ->
-                    case valid_coord_list(CoordList, GameState#game.player1Board) of
+                    case valid_coord_list(ShipName, CoordList, GameState#game.player1Board) of
                         true ->
-                            GameState#game{player1Board=[NewShip|GameState#game.player1Board]};
-                        false -> GameState
+                            {placed, GameState#game{player1Board=[NewShip|GameState#game.player1Board]}};
+                        false -> 
+                            {not_placed, GameState}
                     end;
                 Placer =:= player2 ->
-                    case valid_coord_list(CoordList, GameState#game.player2Board) of
+                    case valid_coord_list(ShipName, CoordList, GameState#game.player1Board) of
                         true ->
-                            GameState#game{player2Board=[NewShip|GameState#game.player2Board]};
-                        false -> GameState
+                            {placed, GameState#game{player2Board=[NewShip|GameState#game.player2Board]}};
+                        false ->
+                            {not_placed, GameState}
                     end
             end;
         _ -> GameState
     end.
 
-valid_coord_list(CoordList, Board) ->
-    Continue = case same_row(CoordList) of
+valid_coord_list(ShipName, CoordList, Board) ->
+    Continue = case length(CoordList) =:= ship_len(ShipName) andalso same_row(CoordList) of
         true -> adjacent(row,CoordList);
         false ->
             case same_column(CoordList) of
@@ -220,3 +237,9 @@ are_ships_left([Ship|Rest]) ->
         [] -> are_ships_left(Rest);
         _ -> true
     end.
+
+ship_len(patrol_boat) -> 2;
+ship_len(submarine) -> 3;
+ship_len(destroyer) -> 3;
+ship_len(battleship) -> 4;
+ship_len(carrier) -> 5.
