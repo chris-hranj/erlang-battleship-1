@@ -7,12 +7,7 @@
   </head>
 
   <body>
-    <erl>
-      out(A) ->
-        {ehtml,
-          {pre, [{bgcolor, white}],
-            io_lib:format('~p', [yaws_api:parse_post(A)])}}.
-    </erl>
+    
     <table class="center">
     <tr><td class="board" id="opponent-board-cell">
       <h2>Opponent View</h2>

@@ -9,7 +9,7 @@
   <body>
     <div>
       <p>
-        Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "A1,A2,A3"
+        Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
       </p>
     </div>
 	    <h2>Player Board</h2>
@@ -169,12 +169,12 @@
 	      </tr>
 	    
 	    </table>
-
     <form method="post" action="/gui/html/gameplay.yaws" >
+      <input type="hidden" name="pid"> 
       <table class="center">
         <tr>
           <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
-          <td><input type="text" name="aircraft_carrier"></td></tr>        
+          <td><input type="text" name="carrier"></td></tr>        
         <tr>
           <td><label for="battleship">Battleship (4 spaces)</label></td>
           <td><input type="text" name="battleship"></td></tr>
