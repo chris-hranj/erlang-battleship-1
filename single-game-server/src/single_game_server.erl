@@ -44,7 +44,7 @@ get_game_for_player(Pid, Player) ->
 %% Server functions
 
 %% Calls init/1 with an empty list as the parameter
-start_link() -> gen_server:start_link(?MODULE, [], []).
+start_link() -> gen_server:start_link({global, bship}, ?MODULE, [], []).
 
 %% Create a game
 init([]) -> {ok, #game{}}. 
