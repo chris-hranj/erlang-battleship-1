@@ -78,9 +78,10 @@ join('POST', []) ->
 
 setup('GET', [GameId, Player]) ->
   Game = boss_db:find(GameId),
-  {ok, [{gameid, Game}, {player, Player}]};
+  {ok, [{gameid, GameId}, {player, Player}]};
 setup('POST', []) ->
   GameId = Req:post_param("game_id"),
+  Player = Req:post_param("player"),
   AircraftPlacement = Req:post_param("carrier"),
   BattleshipPlacement = Req:post_param("battleship"),
   DestroyerPlacement = Req:post_param("destroyer"),
