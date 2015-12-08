@@ -17,7 +17,7 @@
 -record(coord_rec, {hit_status=none,
                     coord}).            
 
--import(single_game_server,[place/4,attack/3]).
+-import(single_game_server,[place/4,attack_target/3]).
 
 list('GET', []) ->
     Games = boss_db:find(game, []),
@@ -51,7 +51,7 @@ attack('POST', []) ->
                     player2Console=Curr:player2_console(),
                     winner=Curr:winner(),
                     turn=Curr:turn()},
-    {_, NewRec} = single_game_server:attack({$a,1}, player1, GameRec),
+    {_, NewRec} = single_game_server:attack_target({$a,1}, player1, GameRec),
     NewGame = Curr:set([{player1_board, NewRec#game.player1Board},
                         {player2_board, NewRec#game.player2Board},
                         {player1_console, NewRec#game.player1Console},

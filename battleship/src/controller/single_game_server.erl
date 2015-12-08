@@ -19,7 +19,7 @@
                     coord}).            % The actual coordinate
 
 %% Client API
-attack(Target, Attacker, Game=#game{}) ->
+attack_target(Target, Attacker, Game=#game{}) ->
     call_attack(Target, Attacker, Game).
 
 place(ShipName, ShipCoords, Placer, Game=#game{}) ->
