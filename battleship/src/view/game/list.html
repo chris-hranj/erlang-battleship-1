@@ -1,33 +1,43 @@
 <html>
 <head>
- <title>{% block title %}Greetings!{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/battleship.css">
+	<title>{% block title %}Battleship!{% endblock %}</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+	<!--<script>
+		function listen_for_events(timestamp) {
+			$.ajax("/game/pull/"+timestamp, { success:
+				function(data, code, xhr) {
+					for (var i=0; i<data.greetings.length; i++) {
+						var msg = data.greetings[i].greeting_text;
+						$("#greeting_list").append("<li>"+msg);
+					}
+					listen_for_events(data.timestamp);
+				}
+			});
+		}
+		$(document).ready(function() { listen_for_events({{ timestamp }}); });
+	</script>-->
 </head>
 <body>
-{% block body %}
-<ul>
-{% if games %}
- {% for game in games %}
- <li>{{ game.id }}
- {% endfor %}
-{% else %}
- <li>No games!
-{% endif %}
-</ul>
+	<h1>Battleship</h1>
+	<h2>CSC 435 - Erlang</h2>
+	<h3>By: Brandon Gottlob, Chris Hranj, Matt Judy, Tyler Povanda, Sean Clark</h3>
 
-<p><a href="{% url action="create" %}">New game...</a></p>
+	{% block body %}
 
+	<p><a href="{% url action="create" %}">New game...</a></p>
 
-<form method="post" action="{% url action="goodbye" %}">
-Delete:<select name="id">
-{% for game in games %}
-<option value="{{ game.id }}">{{ game.id }}
-{% endfor %}
-</select>
-<input type="submit">
-</form>
+	<form method="post" action="{% url action="setup" %}" >
+		Join Game: 
+		<select name="id">
+			{% for game in games %}
+				<option value="{{ game.id }}">{{ game.id }}
+			{% endfor %}
+		</select>
+		<input type="submit" value="Join!">
+	</form>
 
 {% endblock %}
 
-
-
-</body></html>
+</body>
+</html>
