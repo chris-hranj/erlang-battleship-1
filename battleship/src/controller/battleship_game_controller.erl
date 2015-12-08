@@ -1,6 +1,24 @@
 -module(battleship_game_controller, [Req]).
 -compile(export_all).
 
+-record(game, {player1Board=[],     
+               player2Board=[],     
+               player1Console=[],   
+               player2Console=[],   
+               winner=no_one,       
+               turn=player1}).      
+
+-record(ship, {name,                
+               coord_list=[]}).     
+                                    
+-record(coord, {row,        
+                column}).  
+
+-record(coord_rec, {hit_status=none,
+                    coord}).            
+
+-import(single_game_server,[place/4]).
+
 hello('GET', []) ->
     {ok, [{greeting, "Hello, world!"}]}.
 
@@ -19,6 +37,44 @@ create('POST', []) ->
     	{ok, [{errors, ErrorList}, {new_msg, NewGame}]}
     end.
 
+place_ship('GET', []) -> ok;
+place_ship('POST', []) ->
+    Curr = boss_db:find_first(game, [{id, 'equals', "game-1"}]),
+    GameRec = #game{player1Board=Curr:player1_board(),
+                    player2Board=Curr:player2_board(),
+                    player1Console=Curr:player1_console(),
+                    player2Console=Curr:player2_console(),
+                    winner=Curr:winner(),
+                    turn=Curr:turn()},
+    {_, NewRec} = single_game_server:place(patrol_boat, [{$a,1},{$a,2}], player2, GameRec),
+    NewGame = Curr:set([{player1_board, NewRec#game.player1Board},
+                        {player2_board, NewRec#game.player2Board},
+                        {player1_console, NewRec#game.player1Console},
+                        {player2_console, NewRec#game.player2Console},
+                        {winner, NewRec#game.winner},
+                        {turn, NewRec#game.turn}]),
+    boss_db:save_record(NewGame),
+    {ok, NewGame}.
+
+attack('GET', []) -> ok;
+attack('POST', []) ->
+    Curr = boss_db:find_first(game, [{id, 'equals', "game-1"}]),
+    GameRec = #game{player1Board=Curr:player1_board(),
+                    player2Board=Curr:player2_board(),
+                    player1Console=Curr:player1_console(),
+                    player2Console=Curr:player2_console(),
+                    winner=Curr:winner(),
+                    turn=Curr:turn()},
+    {_, NewRec} = single_game_server:attack({$a,1}, player1, GameRec),
+    NewGame = Curr:set([{player1_board, NewRec#game.player1Board},
+                        {player2_board, NewRec#game.player2Board},
+                        {player1_console, NewRec#game.player1Console},
+                        {player2_console, NewRec#game.player2Console},
+                        {winner, NewRec#game.winner},
+                        {turn, NewRec#game.turn}]),
+    boss_db:save_record(NewGame),
+    {ok, NewGame}.
+
 goodbye('POST', []) ->
     boss_db:delete(Req:post_param("id")),
     {redirect, [{action, "list"}]}.
@@ -35,5 +91,4 @@ pull('GET', [LastTimestamp]) ->
 
 live('GET', []) ->
     Greetings = boss_db:find(greeting, []),
-    Timestamp = boss_mq:now("new-greetings"),
-    {ok, [{greetings, Greetings}, {timestamp, Timestamp}]}.
+    Timestamp = boss_mq:now("new-greetings"), {ok, [{greetings, Greetings}, {timestamp, Timestamp}]}.
