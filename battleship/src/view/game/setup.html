@@ -5,8 +5,12 @@
     <h1>Battleship</h1>
     
   </head>
+
   <body>
-    <b> {{ gameid }}</b><br>
+  	{% block body %}
+  		Game details: {{gameid}}
+  	{% endblock %}
+  	
     <div>
       <p>
         Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
@@ -169,10 +173,10 @@
 	      </tr>
 	    
 	    </table>
-    <form method="post" action="test" >
+    <form method="post" action="/gui/html/gameplay.yaws" >
       <input type="hidden" name="pid"> 
       <table class="center">
-        <tr>
+        <tr>gui/html/gameplay.yaws
           <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
           <td><input type="text" name="carrier"></td></tr>        
         <tr>
@@ -187,9 +191,8 @@
         <tr>
           <td><label for="patrol_boat">Patrol Boat (2 spaces)</label></td>
           <td><input type="text" name="patrol_boat"></td></tr>
-        <tr>
-            <td><label for="name">Player Name: </label></td>
-            <td><input type="text" name="player_name"></td></tr>
+		<tr>
+		    <td><input type="hidden" name="player" value={{player}}></td></tr>
         <tr><td colspan="2"><input type="submit" id="submit_ships" value="Place Ships"></td></tr>
       </table>
     </form>

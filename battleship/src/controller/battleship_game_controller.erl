@@ -72,15 +72,18 @@ create('POST', []) ->
     {ok, [{errors, ErrorList}, {new_msg, NewGame}]}
   end.
 
-join('GET', []) ->
-  ok;
-join('POST', []) ->
-  GameId = Req:post_param("game_id"),
-  ExistingGame = boss_db:find(game, [{game_id,GameId}]).
+% join('GET', []) ->
+%   ok;
+% join('POST', []) ->
+%   GameId = Req:post_param("game_id"),
+%   ExistingGame = boss_db:find(game, [{game_id,GameId}]).
 
 setup('GET', [GameId]) ->
   Game = boss_db:find(GameId),
-  {ok, [{gameid, Game}]}.
+  {ok, [{gameid, Game}, {player, "player1"}]};
+setup('POST', []) ->
+  Game = boss_db:find(Req:post_param("id")),
+  {ok, [{gameid, Game}, {player, "player2"}]}.
 
 test('GET', []) ->
   ok;
