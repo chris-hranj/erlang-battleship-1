@@ -34,5 +34,3 @@ getChar(Char) ->
     "i" -> $i;
     "j" -> $j
   end.
-
-

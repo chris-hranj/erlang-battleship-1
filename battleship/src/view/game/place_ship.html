@@ -1,0 +1,14 @@
+{% block title %}A new game!{% endblock %}
+{% block body %}
+{% if errors %}
+<ul>
+ {% for error in errors %}
+ <li><font color=red>{{ error }}</font>
+ {% endfor %}
+</ul>
+{% endif %}
+<form method="post">
+Place the ship into the first game:
+<input type="submit">
+</form>
+{% endblock %}

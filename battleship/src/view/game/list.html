@@ -1,0 +1,33 @@
+<html>
+<head>
+ <title>{% block title %}Greetings!{% endblock %}</title>
+</head>
+<body>
+{% block body %}
+<ul>
+{% if games %}
+ {% for game in games %}
+ <li>{{ game.id }}
+ {% endfor %}
+{% else %}
+ <li>No games!
+{% endif %}
+</ul>
+
+<p><a href="{% url action="create" %}">New game...</a></p>
+
+
+<form method="post" action="{% url action="goodbye" %}">
+Delete:<select name="id">
+{% for game in games %}
+<option value="{{ game.id }}">{{ game.id }}
+{% endfor %}
+</select>
+<input type="submit">
+</form>
+
+{% endblock %}
+
+
+
+</body></html>

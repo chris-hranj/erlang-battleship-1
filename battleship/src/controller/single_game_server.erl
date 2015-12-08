@@ -1,12 +1,7 @@
 -module(single_game_server).
--behavior(gen_server).
--export([attack/3, place/4, get_game/1, get_game_for_player/2, start_link/0]). %% Client API calls
--export([handle_call/3, handle_cast/2, code_change/3, terminate/2,
-         handle_info/2, init/1]). %% Interface functions for implementing gen_server behavior
+-compile(export_all).
 
--record(game, {player1Info,         % Player 1 client's process id and reference - not implemented yet
-               player2Info,         % Player 2 client's process and reference - not implemented yet
-               player1Board=[],     % Player 1's board state (a list of ships)
+-record(game, {player1Board=[],     % Player 1's board state (a list of ships)
                player2Board=[],     % Player 2's board state
                player1Console=[],   % Player 1's list of hits and misses (list of coord_recs)
                player2Console=[],   % Player 2's list of hits and misses
@@ -24,72 +19,23 @@
                     coord}).            % The actual coordinate
 
 %% Client API
-attack(Pid, Target, Attacker) ->
-    gen_server:call(Pid, {attack, Target, Attacker}).
+attack(Target, Attacker, Game=#game{}) ->
+    call_attack(Target, Attacker, Game).
 
-place(Pid, ShipName, ShipCoords, Placer) ->
-    gen_server:call(Pid, {place, ShipName, ShipCoords, Placer}).
+place(ShipName, ShipCoords, Placer, Game=#game{}) ->
+    call_place(ShipName, ShipCoords, Placer, Game).
 
-%% Just gets status of the whole game -- for debugging purposes right now
-%% This function should not be used for anything but debugging
-%% Sending the entire game state to one of the players would give that player
-%% the data about the opponent's board
-get_game(Pid) ->
-    gen_server:call(Pid, {getgame}).
-
-%% Gets information that the player needs to populate board and console
-get_game_for_player(Pid, Player) ->
-    gen_server:call(Pid, {getgame, Player}).
-
-%% Server functions
-
-%% Calls init/1 with an empty list as the parameter
-start_link() -> gen_server:start_link({global, bship}, ?MODULE, [], []).
-
-%% Create a game
-init([]) -> {ok, #game{}}. 
-
-handle_call({attack, Target, Attacker}, _From, Game=#game{}) ->
+call_attack(Target, Attacker, Game=#game{}) ->
     if Attacker =:= Game#game.turn ->
            NewGame = make_move(Target, Attacker, Game),
-           case Attacker of
-               player1 ->
-                   {reply, {did_attack, NewGame#game.player1Console}, NewGame};
-               player2 ->
-                   {reply, {did_attack, NewGame#game.player2Console}, NewGame}
-           end;
+           {did_attack, NewGame};
        Attacker =/= Game#game.turn ->
-           {reply, {did_not_attack, []}, Game}
-    end;
-handle_call({getgame}, _From, Game=#game{}) ->
-    {reply, Game, Game};
-handle_call({getgame, Player}, _From, Game=#game{}) ->
-    case Player of
-        player1 ->
-            {reply, {Game#game.player1Board, Game#game.player1Console}, Game};
-        player2 ->
-            {reply, {Game#game.player2Board, Game#game.player2Console}, Game}
-    end;
-handle_call({place, ShipName, CoordList, Placer}, _From, Game=#game{}) ->
+           {did_not_attack, Game}
+    end.
+
+call_place(ShipName, CoordList, Placer, Game=#game{}) ->
     {Status, NewGame} = place_ship(ShipName, CoordList, Placer, Game),
-    {reply, Status, NewGame}.
-
-handle_cast(Message, Game=#game{}) ->
-    io:format("Unexpected message ~p~n", [Message]),
-    {noreply, Game}.
-
-%% Handle unexpected messages
-handle_info(Message, Game=#game{}) ->
-    io:format("Unexpected message ~p~n", [Message]),
-    {noreply, Game}.
-
-code_change(_OldVsn, State, _Extra) ->
-    %% No changes for now
-    {ok, State}.
-
-terminate(normal, Game=#game{}) ->
-    io:format("A winner is ~p~n", [Game#game.winner]),
-    ok.
+    {Status, NewGame}.
 
 %% Creates a ship record that has not been hit yet
 place_ship(ShipName, CoordList, Placer, GameState=#game{}) -> %% Each coordinate in list param is a 2-tuple {$a, 1}
@@ -112,7 +58,7 @@ place_ship(ShipName, CoordList, Placer, GameState=#game{}) -> %% Each coordinate
                             {not_placed, GameState}
                     end;
                 Placer =:= player2 ->
-                    case valid_coord_list(ShipName, CoordList, GameState#game.player2Board) of
+                    case valid_coord_list(ShipName, CoordList, GameState#game.player1Board) of
                         true ->
                             {placed, GameState#game{player2Board=[NewShip|GameState#game.player2Board]}};
                         false ->
