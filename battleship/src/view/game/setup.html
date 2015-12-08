@@ -1,12 +1,12 @@
 <html>
-  <link rel="stylesheet" type="text/css" href="../css/setup.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/setup.css">
   
   <head>
     <h1>Battleship</h1>
     
   </head>
-
   <body>
+    <b> {{ gameid }}</b><br>
     <div>
       <p>
         Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
@@ -169,7 +169,7 @@
 	      </tr>
 	    
 	    </table>
-    <form method="post" action="/gui/html/gameplay.yaws" >
+    <form method="post" action="test" >
       <input type="hidden" name="pid"> 
       <table class="center">
         <tr>

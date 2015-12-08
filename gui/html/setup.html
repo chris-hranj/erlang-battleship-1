@@ -1,0 +1,197 @@
+<html>
+  <link rel="stylesheet" type="text/css" href="../css/setup.css">
+  
+  <head>
+    <h1>Battleship</h1>
+    
+  </head>
+
+  <body>
+    <div>
+      <p>
+        Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
+      </p>
+    </div>
+	    <h2>Player Board</h2>
+	    <table class="center" id="player-board">
+	      <tr class="cellHeading">
+	        <td class="cellHeading"></td>
+	        <td class="cellHeading">0</td>
+	        <td class="cellHeading">1</td>
+	        <td class="cellHeading">2</td>
+	        <td class="cellHeading">3</td>
+	        <td class="cellHeading">4</td>
+	        <td class="cellHeading">5</td>
+	        <td class="cellHeading">6</td>
+	        <td class="cellHeading">7</td>
+	        <td class="cellHeading">8</td>
+	        <td class="cellHeading">9</td>
+	      <tr>
+	     
+	      <tr>
+	        <td class="cellHeading">A</td>
+	        <td class="player-cell" id="A0"></td>
+	        <td class="player-cell" id="A1"></td>
+	        <td class="player-cell" id="A2"></td>
+	        <td class="player-cell" id="A3"></td>
+	        <td class="player-cell" id="A4"></td>
+	        <td class="player-cell" id="A5"></td>
+	        <td class="player-cell" id="A6"></td>
+	        <td class="player-cell" id="A7"></td>
+	        <td class="player-cell" id="A8"></td>
+	        <td class="player-cell" id="A9"></td>
+	      </tr>
+     
+	     	<tr>
+	        <td class="cellHeading">B</td>
+	        <td class="player-cell" id="B0"></td>
+	        <td class="player-cell" id="B1"></td>
+	        <td class="player-cell" id="B2"></td>
+	        <td class="player-cell" id="B3"></td>
+	        <td class="player-cell" id="B4"></td>
+	        <td class="player-cell" id="B5"></td>
+	        <td class="player-cell" id="B6"></td>
+	        <td class="player-cell" id="B7"></td>
+	        <td class="player-cell" id="B8"></td>
+	        <td class="player-cell" id="B9"></td>
+	      </tr>
+
+	      <tr>
+	        <td class="cellHeading">C</td>
+	        <td class="player-cell" id="C0"></td>
+	        <td class="player-cell" id="C1"></td>
+	        <td class="player-cell" id="C2"></td>
+	        <td class="player-cell" id="C3"></td>
+	        <td class="player-cell" id="C4"></td>
+	        <td class="player-cell" id="C5"></td>
+	        <td class="player-cell" id="C6"></td>
+	        <td class="player-cell" id="C7"></td>
+	        <td class="player-cell" id="C8"></td>
+	        <td class="player-cell" id="C9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">D</td>
+	        <td class="player-cell" id="D0"></td>
+	        <td class="player-cell" id="D1"></td>
+	        <td class="player-cell" id="D2"></td>
+	        <td class="player-cell" id="D3"></td>
+	        <td class="player-cell" id="D4"></td>
+	        <td class="player-cell" id="D5"></td>
+	        <td class="player-cell" id="D6"></td>
+	        <td class="player-cell" id="D7"></td>
+	        <td class="player-cell" id="D8"></td>
+	        <td class="player-cell" id="D9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">E</td>
+	        <td class="player-cell" id="E0"></td>
+	        <td class="player-cell" id="E1"></td>
+	        <td class="player-cell" id="E2"></td>
+	        <td class="player-cell" id="E3"></td>
+	        <td class="player-cell" id="E4"></td>
+	        <td class="player-cell" id="E5"></td>
+	        <td class="player-cell" id="E6"></td>
+	        <td class="player-cell" id="E7"></td>
+	        <td class="player-cell" id="E8"></td>
+	        <td class="player-cell" id="E9"></td>
+	      </tr>
+	      
+	      <tr>
+	        <td class="cellHeading">F</td>
+	        <td class="player-cell" id="F0"></td>
+	        <td class="player-cell" id="F1"></td>
+	        <td class="player-cell" id="F2"></td>
+	        <td class="player-cell" id="F3"></td>
+	        <td class="player-cell" id="F4"></td>
+	        <td class="player-cell" id="F5"></td>
+	        <td class="player-cell" id="F6"></td>
+	        <td class="player-cell" id="F7"></td>
+	        <td class="player-cell" id="F8"></td>
+	        <td class="player-cell" id="F9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">G</td>
+	        <td class="player-cell" id="G0"></td>
+	        <td class="player-cell" id="G1"></td>
+	        <td class="player-cell" id="G2"></td>
+	        <td class="player-cell" id="G3"></td>
+	        <td class="player-cell" id="G4"></td>
+	        <td class="player-cell" id="G5"></td>
+	        <td class="player-cell" id="G6"></td>
+	        <td class="player-cell" id="G7"></td>
+	        <td class="player-cell" id="G8"></td>
+	        <td class="player-cell" id="G9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">H</td>
+	        <td class="player-cell" id="H0"></td>
+	        <td class="player-cell" id="H1"></td>
+	        <td class="player-cell" id="H2"></td>
+	        <td class="player-cell" id="H3"></td>
+	        <td class="player-cell" id="H4"></td>
+	        <td class="player-cell" id="H5"></td>
+	        <td class="player-cell" id="H6"></td>
+	        <td class="player-cell" id="H7"></td>
+	        <td class="player-cell" id="H8"></td>
+	        <td class="player-cell" id="H9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">I</td>
+	        <td class="player-cell" id="I0"></td>
+	        <td class="player-cell" id="I1"></td>
+	        <td class="player-cell" id="I2"></td>
+	        <td class="player-cell" id="I3"></td>
+	        <td class="player-cell" id="I4"></td>
+	        <td class="player-cell" id="I5"></td>
+	        <td class="player-cell" id="I6"></td>
+	        <td class="player-cell" id="I7"></td>
+	        <td class="player-cell" id="I8"></td>
+	        <td class="player-cell" id="I9"></td>
+	      </tr>
+	    
+	      <tr>
+	        <td class="cellHeading">J</td>
+	        <td class="player-cell" id="J0"></td>
+	        <td class="player-cell" id="J1"></td>
+	        <td class="player-cell" id="J2"></td>
+	        <td class="player-cell" id="J3"></td>
+	        <td class="player-cell" id="J4"></td>
+	        <td class="player-cell" id="J5"></td>
+	        <td class="player-cell" id="J6"></td>
+	        <td class="player-cell" id="J7"></td>
+	        <td class="player-cell" id="J8"></td>
+	        <td class="player-cell" id="J9"></td>
+	      </tr>
+	    
+	    </table>
+    <form method="post" action="/gui/html/gameplay.html" >
+      <input type="hidden" name="pid"> 
+      <table class="center">
+        <tr>
+          <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
+          <td><input type="text" name="carrier"></td></tr>        
+        <tr>
+          <td><label for="battleship">Battleship (4 spaces)</label></td>
+          <td><input type="text" name="battleship"></td></tr>
+        <tr>
+          <td><label for="submarine">Submarine (3 spaces)</label></td>
+          <td><input type="text" name="submarine"></td></tr>
+        <tr>
+          <td><label for="destroyer">Destroyer (3 spaces)</label></td>
+          <td><input type="text" name="destroyer"></td></tr>
+        <tr>
+          <td><label for="patrol_boat">Patrol Boat (2 spaces)</label></td>
+          <td><input type="text" name="patrol_boat"></td></tr>
+        <tr>
+            <td><label for="name">Player Name: </label></td>
+            <td><input type="text" name="player_name"></td></tr>
+        <tr><td colspan="2"><input type="submit" id="submit_ships" value="Place Ships"></td></tr>
+      </table>
+    </form>
+  </body>
+</html>
