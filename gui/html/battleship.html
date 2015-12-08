@@ -4,14 +4,25 @@
     <h1>Battleship</h1>
     <h2>CSC 435 - Erlang</h2>
     <h3>By: Brandon Gottlob, Chris Hranj, Matt Judy, Sean Clark, Tyler Povanda</h3>
-
   </head>
   <body>
     <table class="center">
       <tr>
-        <td><button class="mainBtn" id="new_rand_game">New Game</button></td>
+        <td>
+          <form method="post" action="/gui/html/setup.html">
+          <input type="hidden" id="pid" name="pid" value="None">
+          <input type="hidden" name="player_name">player1</input>
+          <input type="submit" id="new_rand_game" value="New Game">
+          </form>
+        </td>
         <td></td>
-        <td><button class="mainBtn" id="new_friend_game">New Game with Friends</button></td>
+        <td>
+          <form method="post" action="/gui/html/setup.yaws">
+          <label for="pid">Enter your friend's Pid: </label><input type="text" id="pid" name="pid">
+          <input type="hidden" name="player_name">player2</input>
+          <input type="submit" id="new_friend_game" value="Join Existing Game">
+          </form>
+        </td>
       </tr>
     <table>
   </body>

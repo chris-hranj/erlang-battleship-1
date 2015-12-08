@@ -1,31 +1,12 @@
-var model = {
-  boardSize: 10;
-  numShips: 5,
-  shipsSunk: 0,
+var cells = document.getElementsByClassName("opponent-cell");
+var coordinate = document.getElementById("coordinate");
 
-  playerShips: [
-    {locations: [0, 0], hits: ["","",""] },
-    {locations: [0, 0, 0], hits: ["","",""] },
-    {locations: [0, 0, 0], hits: ["","",""] },
-    {locations: [0, 0, 0, 0], hits: ["","","",""] },
-    {locations: [0, 0, 0, 0, 0], hits: ["","","","",""] }
-  ]
-
-  
-};
-
-var view = {
-  
-  updateInstructions: function(instr){
-    
-  }
-  
-  displayHit: function(location){
-    
-  }
-
-  displayMiss: function(location){
-    
-  }
+var myFunction = function() {
+  var attribute = this.getAttribute("id");
+  coordinate.innerHTML = attribute;
 
 };
+
+for(var i=0;i<cells.length;i++){
+  cells[i].addEventListener('click', myFunction, false);
+}
