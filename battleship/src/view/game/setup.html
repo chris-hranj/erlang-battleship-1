@@ -1,4 +1,3 @@
-
 <html>
   <link rel="stylesheet" type="text/css" href="/static/css/setup.css">
   
@@ -16,6 +15,9 @@
       <p>
         Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
       </p>
+      {% if error %}
+      <p>{{ error }}</p>
+      {% endif %}
     </div>
 	    <h2>Player Board</h2>
 	    <table class="center" id="player-board">
@@ -174,7 +176,7 @@
 	      </tr>
 	    
 	    </table>
-    <form method="post" action="test" >
+        <form method="post">
       <table class="center">
         <tr>
           <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
