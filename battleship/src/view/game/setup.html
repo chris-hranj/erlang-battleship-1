@@ -1,3 +1,19 @@
+Skip to content
+This repository  
+Search
+Pull requests
+Issues
+Gist
+ @mjudy94
+ Watch 1
+  Star 0
+ Fork 2 bgottlob/erlang-battleship
+ Code  Issues 0  Pull requests 0  Wiki  Pulse  Graphs
+Branch: chicago-boss-i… Find file Copy patherlang-battleship/battleship/src/view/game/setup.html
+9febb2c  27 minutes ago
+@chris-hranj chris-hranj adding join game and pass player param
+2 contributors @chris-hranj @mjudy94
+RawBlameHistory    200 lines (185 sloc)  7.34 KB
 <html>
   <link rel="stylesheet" type="text/css" href="/static/css/setup.css">
   
@@ -5,8 +21,12 @@
     <h1>Battleship</h1>
     
   </head>
+
   <body>
-    <b> {{ gameid }}</b><br>
+  	{% block body %}
+  		Game details: {{gameid}}
+  	{% endblock %}
+  	
     <div>
       <p>
         Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
@@ -170,7 +190,6 @@
 	    
 	    </table>
     <form method="post" action="test" >
-      <input type="hidden" name="pid"> 
       <table class="center">
         <tr>
           <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
@@ -187,9 +206,8 @@
         <tr>
           <td><label for="patrol_boat">Patrol Boat (2 spaces)</label></td>
           <td><input type="text" name="patrol_boat"></td></tr>
-        <tr>
-            <td><label for="name">Player Name: </label></td>
-            <td><input type="text" name="player_name"></td></tr>
+		<tr>
+		    <td><input type="hidden" name="player" value={{player}}></td></tr>
         <tr><td colspan="2"><input type="submit" id="submit_ships" value="Place Ships"></td></tr>
       </table>
     </form>
