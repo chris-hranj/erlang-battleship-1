@@ -17,25 +17,11 @@
 -record(coord_rec, {hit_status=none,
                     coord}).            
 
--import(single_game_server,[place/4]).
-
-hello('GET', []) ->
-    {ok, [{greeting, "Hello, world!"}]}.
+-import(single_game_server,[place/4,attack/3]).
 
 list('GET', []) ->
     Games = boss_db:find(game, []),
     {ok, [{games, Games}]}.
-
-create('GET', []) ->
-    ok;
-create('POST', []) ->
-    NewGame = game:new(id,[],[],[],[],no_one,player1),
-    case NewGame:save() of
-    	{ok, SavedGame} ->
-    	{redirect, [{action, "list"}]};
-    	{error, ErrorList} ->
-    	{ok, [{errors, ErrorList}, {new_msg, NewGame}]}
-    end.
 
 place_ship('GET', []) -> ok;
 place_ship('POST', []) ->
@@ -75,20 +61,38 @@ attack('POST', []) ->
     boss_db:save_record(NewGame),
     {ok, NewGame}.
 
-goodbye('POST', []) ->
-    boss_db:delete(Req:post_param("id")),
-    {redirect, [{action, "list"}]}.
-%%% -------The stuff under here has not been tested yet-----
-send_test_message('GET', []) ->
-    TestMessage = "Free at last!",
-    boss_mq:push("test-channel", TestMessage),
-    {output, TestMessage}.
+create('GET', []) ->
+  ok;
+create('POST', []) ->
+  NewGame = game:new(id, [], [], [], [], no_one, player1),
+  case NewGame:save() of
+    {ok, SavedGame} ->
+    {redirect, [{action, "setup"}, {game_id,SavedGame:id()}]};
+    {error, ErrorList} ->
+    {ok, [{errors, ErrorList}, {new_msg, NewGame}]}
+  end.
 
-pull('GET', [LastTimestamp]) ->
-    {ok, Timestamp, Greetings} = boss_mq:pull("new-greetings", 
-    list_to_integer(LastTimestamp)),
-    {json, [{timestamp, Timestamp}, {greetings, Greetings}]}.
+join('GET', []) ->
+  ok;
+join('POST', []) ->
+  GameId = Req:post_param("game_id"),
+  ExistingGame = boss_db:find(game, [{game_id,GameId}]).
 
-live('GET', []) ->
-    Greetings = boss_db:find(greeting, []),
-    Timestamp = boss_mq:now("new-greetings"), {ok, [{greetings, Greetings}, {timestamp, Timestamp}]}.
+setup('GET', [GameId]) ->
+  Game = boss_db:find(GameId),
+  {ok, [{gameid, Game}]}.
+
+test('GET', []) ->
+  ok;
+test('POST', []) ->
+  GameId = Req:post_param("game_id"),
+  AircraftPlacement = Req:post_param("carrier"),
+  BattleshipPlacement = Req:post_param("battleship"),
+  DestroyerPlacement = Req:post_param("destroyer"),
+  SubmarinePlacement = Req:post_param("submarine"),
+  PatrolPlacement = Req:post_param("patrol_boat"),
+  {ok, [{carrier, AircraftPlacement}, {battleship, BattleshipPlacement}, {destroyer, DestroyerPlacement}, {submarine, SubmarinePlacement}, {patrol, PatrolPlacement}]}.
+
+%% Don't know what to do with this yet
+%attack('POST', []) ->
+  %coords = Req:post_param("attack_coords").

@@ -112,7 +112,7 @@ place_ship(ShipName, CoordList, Placer, GameState=#game{}) -> %% Each coordinate
                             {not_placed, GameState}
                     end;
                 Placer =:= player2 ->
-                    case valid_coord_list(ShipName, CoordList, GameState#game.player1Board) of
+                    case valid_coord_list(ShipName, CoordList, GameState#game.player2Board) of
                         true ->
                             {placed, GameState#game{player2Board=[NewShip|GameState#game.player2Board]}};
                         false ->

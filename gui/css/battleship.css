@@ -23,5 +23,13 @@ table.center {
 }
 
 td {
-  width: 100px;
+  
+  text-align: center;
+  padding: 5px;
 }
+
+label{
+  color: green;
+  padding-right: 10px;
+}
+
