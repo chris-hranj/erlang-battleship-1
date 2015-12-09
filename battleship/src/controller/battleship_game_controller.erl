@@ -21,9 +21,8 @@
 
 list('GET', []) ->
     Games = boss_db:find(game, []),
+    Timestamp = boss_mq:now("new-games"),
     {ok, [{games, Games}]}.
-
-
 
 attack('POST', [GameId,PlayerStr,Coord]) ->
     Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
@@ -154,3 +153,8 @@ coord_recs_to_proplist([Curr=#coord_rec{}|Rest]) ->
 
 coord_to_proplist(Coord=#coord{}) ->
   [{row, Coord#coord.row}, {column, Coord#coord.column}].
+
+pull('GET', [LastTimestamp]) ->
+  {ok, Timestamp, Games} = boss_mq:pull("new-games", 
+  list_to_integer(LastTimestamp)),
+  {json, [{timestamp, Timestamp}, {games, Games}]}.

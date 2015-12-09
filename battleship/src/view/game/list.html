@@ -1,22 +1,23 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="/static/css/create.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/battleship.css">
 	<title>{% block title %}Battleship!{% endblock %}</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-	<!--<script>
-		function listen_for_events(timestamp) {
+	<script>
+		function listen_for_new(timestamp) {
 			$.ajax("/game/pull/"+timestamp, { success:
 				function(data, code, xhr) {
-					for (var i=0; i<data.greetings.length; i++) {
-						var msg = data.greetings[i].greeting_text;
-						$("#greeting_list").append("<li>"+msg);
+					for (var i=0; i<data.games.length; i++) {
+						var game_id = data.games[i].id;
+						$("#games_list").append($("<option></option>")
+         					.attr("value", game_id).text(game_id));
 					}
-					listen_for_events(data.timestamp);
+					listen_for_new(data.timestamp);
 				}
 			});
 		}
-		$(document).ready(function() { listen_for_events({{ timestamp }}); });
-	</script>-->
+		$(document).ready(function() { listen_for_new({{ timestamp }}); });
+	</script>
 </head>
 <body>
 	<h1>Battleship</h1>
@@ -29,7 +30,7 @@
 
 	<form method="post" action="{% url action="join" %}" >
 		Join Game: 
-		<select name="id">
+		<select id="games_list" name="id">
 			{% for game in games %}
 				<option value="{{ game.id }}">{{ game.id }}
 			{% endfor %}
