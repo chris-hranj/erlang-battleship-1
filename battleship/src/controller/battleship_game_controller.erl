@@ -22,7 +22,7 @@
 list('GET', []) ->
     Games = boss_db:find(game, []),
     Timestamp = boss_mq:now("new-games"),
-    {ok, [{games, Games}]}.
+    {ok, [{games, Games}, {timestamp, Timestamp}]}.
 
 attack('POST', [GameId,PlayerStr,Coord]) ->
     Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
