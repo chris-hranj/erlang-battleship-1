@@ -6,6 +6,8 @@
 % return a list of WatchIDs that should be cancelled in the stop
 % function below (stop is executed if the script is ever reloaded).
 init() ->
+    boss_news:start(),
+    boss_mq:start(),
 	{ok, WatchId} = boss_news:watch("games", 
 	fun(created, NewGame) -> 
 			boss_mq:push("new-games", NewGame);

@@ -22,26 +22,32 @@
 list('GET', []) ->
     Games = boss_db:find(game, []),
     Timestamp = boss_mq:now("new-games"),
-    {ok, [{games, Games}]}.
+    {ok, [{games, Games}, {timestamp, Timestamp}]}.
 
-attack('GET', []) -> ok;
-attack('POST', []) ->
-    Curr = boss_db:find_first(game, [{id, 'equals', "game-1"}]),
+attack('POST', [GameId,PlayerStr,Coord]) ->
+    Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
+    [AttackCoord|_] = Curr:parse(Coord),
+    Player = list_to_atom(PlayerStr),
     GameRec = #game{player1Board=Curr:player1_board(),
                     player2Board=Curr:player2_board(),
                     player1Console=Curr:player1_console(),
                     player2Console=Curr:player2_console(),
                     winner=Curr:winner(),
                     turn=Curr:turn()},
-    {_, NewRec} = single_game_server:attack_target({$a,1}, player1, GameRec),
-    NewGame = Curr:set([{player1_board, NewRec#game.player1Board},
-                        {player2_board, NewRec#game.player2Board},
-                        {player1_console, NewRec#game.player1Console},
-                        {player2_console, NewRec#game.player2Console},
-                        {winner, NewRec#game.winner},
-                        {turn, NewRec#game.turn}]),
-    boss_db:save_record(NewGame),
-    {ok, NewGame}.
+    {Status, NewRec} = single_game_server:attack_target(AttackCoord, Player, GameRec),
+    case Status of
+      did_not_attack ->
+        {ok, [{error, "It's not your turn, your attack didn't go through"}]};
+      _ ->
+        NewGame = Curr:set([{player1_board, NewRec#game.player1Board},
+                            {player2_board, NewRec#game.player2Board},
+                            {player1_console, NewRec#game.player1Console},
+                            {player2_console, NewRec#game.player2Console},
+                            {winner, NewRec#game.winner},
+                            {turn, NewRec#game.turn}]),
+        boss_db:save_record(NewGame),
+        {ok, []}
+    end.
 
 create('GET', []) ->
   ok;
@@ -130,7 +136,7 @@ get_data('GET', [GameId,Player]) ->
       player1 ->
         {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
       player2 ->
-        {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
+        {json, PropList ++ [{board, board_to_proplist(Game:player2_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
       _ ->
         {json, [{error, "error"}]}
     end.
