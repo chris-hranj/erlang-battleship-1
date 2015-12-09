@@ -98,25 +98,53 @@ setup('POST', [GameId, PlayerStr]) ->
                         {winner, PatrolRec#game.winner},
                         {turn, PatrolRec#game.turn}]),
         boss_db:save_record(NewGame),
-        {redirect, [{action, "play"}]};
+        {redirect, [{action, "play/" ++ GameId ++ "/" ++ PlayerStrr}]};
       false ->
-        {ok, [{error, "You screwed up"}]}
+        {ok, [{error, "Invalid placement of ships, please try again"}]}
   end.
 
-play('GET', []) ->
-    ok.
+play('GET', [GameId,Player]) ->
+  Game = boss_db:find_first(game, [{id, 'equals', GameId}]),
+  Turn = Game:turn(),
+  TurnString = atom_to_list(Turn),
+  if 
+    TurnString == Player ->
+      PlayerTurn = "your";
+    true ->
+      PlayerTurn = "your opponent's"
+  end,
+  case Game:winner() of
+    no_one ->
+      {ok, [{game_id, GameId}, {player, Player}, {turn, PlayerTurn}]};
+    _ ->
+      {redirect, [{action, "winner/" ++ GameId ++ "/" ++ Game:winner()}]}
+  end.
 
-test('GET', []) ->
-  ok;
-test('POST', []) ->
-  GameId = Req:post_param("game_id"),
-  AircraftPlacement = Req:post_param("carrier"),
-  BattleshipPlacement = Req:post_param("battleship"),
-  DestroyerPlacement = Req:post_param("destroyer"),
-  SubmarinePlacement = Req:post_param("submarine"),
-  PatrolPlacement = Req:post_param("patrol_boat"),
-  {ok, [{carrier, AircraftPlacement}, {battleship, BattleshipPlacement}, {destroyer, DestroyerPlacement}, {submarine, SubmarinePlacement}, {patrol, PatrolPlacement}]}.
+winner('GET', [GameId, Winner]) ->
+  ok.
 
-%% Don't know what to do with this yet
-%attack('POST', []) ->
-  %coords = Req:post_param("attack_coords").
+get_data('GET', [GameId,Player]) ->
+    Game = boss_db:find_first(game, [{id, 'equals', GameId}]),
+    PlayerAtom = list_to_atom(Player),
+    PropList = [{turn, Game:turn()},{winner, Game:winner()}],
+    case PlayerAtom of
+      player1 ->
+        {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
+      player2 ->
+        {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
+      _ ->
+        {json, [{error, "error"}]}
+    end.
+
+board_to_proplist([]) -> [];
+board_to_proplist([Curr=#ship{}|Rest]) ->
+  [[{ship_name,Curr#ship.name},
+   {coord_list,coord_recs_to_proplist(Curr#ship.coord_list)}] | board_to_proplist(Rest)].
+
+coord_recs_to_proplist([]) -> [];
+coord_recs_to_proplist([Curr=#coord_rec{}|Rest]) ->
+  [[{hit_status, Curr#coord_rec.hit_status},
+   {coord, coord_to_proplist(Curr#coord_rec.coord)}] | coord_recs_to_proplist(Rest)].
+
+coord_to_proplist(Coord=#coord{}) ->
+  [{row, Coord#coord.row}, {column, Coord#coord.column}].

@@ -23,7 +23,6 @@
 	    <table class="center" id="player-board">
 	      <tr class="cellHeading">
 	        <td class="cellHeading"></td>
-	        <td class="cellHeading">0</td>
 	        <td class="cellHeading">1</td>
 	        <td class="cellHeading">2</td>
 	        <td class="cellHeading">3</td>
@@ -33,6 +32,7 @@
 	        <td class="cellHeading">7</td>
 	        <td class="cellHeading">8</td>
 	        <td class="cellHeading">9</td>
+	        <td class="cellHeading">10</td>
 	      <tr>
 	     
 	      <tr>
@@ -176,7 +176,7 @@
 	      </tr>
 	    
 	    </table>
-        <form method="post">
+        <form action="setup" method="post">
       <table class="center">
         <tr>
           <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
@@ -193,10 +193,10 @@
         <tr>
           <td><label for="patrol_boat">Patrol Boat (2 spaces)</label></td>
           <td><input type="text" name="patrol_boat"></td></tr>
-		<tr>
-		    <td><input type="hidden" name="player" value={{player}}></td></tr>
-        <tr>
-		    <td><input type="hidden" name="game_id" value={{gameid}}></td></tr>
+		    <tr>
+		      <td><input type="hidden" name="player" value={{player}}></td></tr>
+		    <tr>
+		      <td><input type="hidden" name="game" value={{gameid}}></td></tr>
         <tr><td colspan="2"><input type="submit" id="submit_ships" value="Place Ships"></td></tr>
       </table>
     </form>
