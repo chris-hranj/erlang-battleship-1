@@ -62,7 +62,19 @@ div.gameKey {
   width: 300px;
 }
 
+div.player_turn {
+  text-align: center;
+  border: 2px solid green;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
 strong {
+  color: green;
+}
+
+b {
   color: green;
 }
 
