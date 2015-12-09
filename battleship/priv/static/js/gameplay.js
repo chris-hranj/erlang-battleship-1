@@ -43,19 +43,6 @@ $(document).ready(function() {
           }
         }
 
-        for (var i = 0; i < data.board.length; i++) {
-          ship = data.board[i];
-          for (var j = 0; j < ship.coord_list.length; j++) {
-            var coord_rec = ship.coord_list[j];
-            var cellId = row_to_char(coord_rec.coord.row) + coord_rec.coord.column;
-            if (coord_rec.hit_status === "hit")
-              $("#player-board").find("#"+cellId).addClass("hit");
-            else if (coord_rec.hit_status === "none")
-              $("#player-board").find("#"+cellId).addClass("ship");
-          }
-        }
-        
-
       }});
   }
   update_data();

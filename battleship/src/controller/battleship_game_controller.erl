@@ -131,7 +131,7 @@ get_data('GET', [GameId,Player]) ->
       player1 ->
         {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
       player2 ->
-        {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
+        {json, PropList ++ [{board, board_to_proplist(Game:player2_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
       _ ->
         {json, [{error, "error"}]}
     end.
